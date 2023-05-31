@@ -8,7 +8,11 @@ export const TicketForm = () => {
     */
     const [ticket, update] = useState({
 
+        description: "",
+        emergency: false
     })
+
+    const navigate = useNavigate()
     /*
         TODO: Use the useNavigation() hook so you can redirect
         the user to the ticket list
@@ -20,10 +24,41 @@ export const TicketForm = () => {
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
-        // TODO: Create the object to be saved to the API
 
+        // TODO: Create the object to be saved to the API
+        /* {
+        
+        "userId": 3,
+        "description": "Saepe ex sapiente deserunt et voluptas fugiat vero quasi. Ipsam est non ipsa. Occaecati rerum ipsa consequuntur. Ratione commodi unde sint non rerum. Sit quia et aut sunt.",
+        "emergency": false,
+        "dateCompleted": "Fri Apr 29 2022 14:02:20 GMT-0500 (Central Daylight Time)"
+        }
+        
+        */
+
+        const ticketToSendToAPI = {
+            userId: honeyUserObject.id,
+            description: ticket.description,
+            emergency: ticket.emergency,
+            dateCompleted: ""
+
+
+        }
 
         // TODO: Perform the fetch() to POST the object to the API
+
+        return fetch(`http://localhost:8088/servicetickets`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(ticketToSendToAPI)
+        })
+            .then(response => response.json)
+            .then(() => {
+                navigate("/tickets")
+
+            })
     }
 
     return (
@@ -38,7 +73,14 @@ export const TicketForm = () => {
                         className="form-control"
                         placeholder="Brief description of problem"
                         value={ticket.description}
-                        onChange={ } />
+                        onChange={
+                            (evt) => {
+                                const copy = { ...ticket }
+                                copy.description = evt.target.value
+                                update(copy)
+
+                            }
+                        } />
                 </div>
             </fieldset>
             <fieldset>
@@ -46,10 +88,19 @@ export const TicketForm = () => {
                     <label htmlFor="name">Emergency:</label>
                     <input type="checkbox"
                         value={ticket.emergency}
-                        onChange={ } />
+                        onChange={
+                            (evt) => {
+                                const copy = { ...ticket }
+                                copy.emergency = evt.target.checked
+                                update(copy)
+                            }
+                        } />
                 </div>
             </fieldset>
-            <button className="btn btn-primary">
+            <button
+                onClick={(clickEvent) => handleSaveButtonClick(clickEvent)}
+
+                className="btn btn-primary">
                 Submit Ticket
             </button>
         </form>
