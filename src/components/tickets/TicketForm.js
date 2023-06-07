@@ -24,18 +24,6 @@ export const TicketForm = () => {
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
-
-        // TODO: Create the object to be saved to the API
-        /* {
-        
-        "userId": 3,
-        "description": "Saepe ex sapiente deserunt et voluptas fugiat vero quasi. Ipsam est non ipsa. Occaecati rerum ipsa consequuntur. Ratione commodi unde sint non rerum. Sit quia et aut sunt.",
-        "emergency": false,
-        "dateCompleted": "Fri Apr 29 2022 14:02:20 GMT-0500 (Central Daylight Time)"
-        }
-        
-        */
-
         const ticketToSendToAPI = {
             userId: honeyUserObject.id,
             description: ticket.description,
